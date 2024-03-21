@@ -50,16 +50,16 @@ static int cmd_c(char *args) {
 static int cmd_si(char *args) {
   /* extract the number */
   char *arg = strtok(NULL, " ");
+  int num;
 
-  int num = atoi(arg);
-
-  if(!num){
-    /* default: one instruction*/
-    cpu_exec(1);
-  }  
-  else{
-    cpu_exec(num);
+  if(arg == NULL) {
+    num = 1;
   }
+  else{
+    num = atoi(arg);
+  }
+  cpu_exec(num);
+  
   return 0;
 }
 
