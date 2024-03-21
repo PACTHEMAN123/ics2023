@@ -48,7 +48,18 @@ static int cmd_c(char *args) {
 }
 
 static int cmd_si(char *args) {
-  cpu_exec(1);
+  /* extract the number */
+  char *arg = strtok(NULL, " ");
+
+  int num = atoi(arg);
+
+  if(!num){
+    /* default: one instruction*/
+    cpu_exec(1);
+  }  
+  else{
+    cpu_exec(num);
+  }
   return 0;
 }
 
@@ -96,6 +107,7 @@ static int cmd_help(char *args) {
   }
   return 0;
 }
+
 
 void sdb_set_batch_mode() {
   is_batch_mode = true;
