@@ -23,6 +23,7 @@ static int is_batch_mode = false;
 
 void init_regex();
 void init_wp_pool();
+word_t vaddr_read(vaddr_t, int);
 
 /* We use the `readline' library to provide more flexibility to read from stdin. */
 static char* rl_gets() {
@@ -82,6 +83,23 @@ static int cmd_info(char *args) {
 }
 
 static int cmd_x(char *args) {
+  char *num, *nexpr;
+  num = strtok(args, " ");
+  nexpr = strtok(args, " ");
+  int nums;
+  int exprs;
+  if((num == NULL)||(nexpr == NULL) ){
+    printf("Missing arguments");
+  } 
+  else {
+    nums = atoi(num);	
+    exprs = strtol(nexpr, NULL, 16);
+    int i;
+    for(i = 0; i < nums; i++) {
+      word_t vread = vaddr_read(exprs+4*i, 4);
+      printf("%x\n",vread);  
+    }
+  }
   return 0;
 }
 
