@@ -69,7 +69,7 @@ static int cmd_q(char *args) {
 }
 
 static int cmd_info(char *args) {
-  char *arg = strtok(NULL, " ");
+  char *arg = strtok(args, " ");
   if(arg == NULL) {
     printf("Use info r or info w");
   }
