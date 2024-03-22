@@ -95,13 +95,11 @@ static int cmd_x(char *args) {
     nums = atoi(num);	
     exprs = strtol(nexpr, NULL, 16);
     printf("%d, %x",nums, exprs);
-    /*
     int i;
     for(i = 0; i < nums; i++) {
       word_t vread = vaddr_read(exprs+4*i, 4);
       printf("%x\n",vread);  
     }
-    */
   }
   return 0;
 }
