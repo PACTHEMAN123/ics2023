@@ -67,6 +67,36 @@ static int cmd_q(char *args) {
   return -1;
 }
 
+static int cmd_info(char *args) {
+  char *arg = strtok(NULL, " ");
+  if(arg == NULL) {
+    printf("Use info r or info w");
+  }
+  else if(!strcmp(arg, "r")) {
+    isa_reg_display(NULL);  
+  }
+  else {
+  
+  }
+  return 0;
+}
+
+static int cmd_x(char *args) {
+  return 0;
+}
+
+static int cmd_p(char *args) {
+  return 0;
+}
+
+static int cmd_w(char *args) {
+  return 0;
+}
+
+static int cmd_d(char *args) {
+  return 0;
+}
+
 static int cmd_help(char *args);
 
 static struct {
@@ -78,6 +108,11 @@ static struct {
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
   { "si", "Execute single instruction", cmd_si },
+  { "info", "Display the information", cmd_info },
+  { "x", "Scan the memory", cmd_x },
+  { "p", "Calculate the expr", cmd_p },
+  { "w", "Set watchpoint", cmd_w },
+  { "d", "Delete watchpoint", cmd_d },
 
   /* TODO: Add more commands */
 
