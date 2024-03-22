@@ -85,7 +85,7 @@ static int cmd_info(char *args) {
 static int cmd_x(char *args) {
   char *num, *nexpr;
   num = strtok(args, " ");
-  nexpr = strtok(args, " ");
+  nexpr = strtok(NULL, " ");
   int nums;
   int exprs;
   if((num == NULL)||(nexpr == NULL) ){
