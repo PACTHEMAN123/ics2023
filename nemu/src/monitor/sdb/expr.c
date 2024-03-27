@@ -43,7 +43,7 @@ static struct rule {
   {"\\-", '-'},		// minus
   {"\\*", '*'},		// multi
   {"\\/", '/'}, 	// divise
-  {"(\\d)+", TK_NUM},	// numbers			 
+  {"[0-9]+", TK_NUM},	// numbers			 
 };
 
 #define NR_REGEX ARRLEN(rules)
