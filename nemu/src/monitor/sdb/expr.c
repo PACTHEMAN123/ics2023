@@ -172,7 +172,7 @@ static bool make_token(char *e) {
            case TK_NOTYPE: break;
 	   case TK_NUM: 
 		int j;
-		assert(substr_len >= 32);
+		assert(substr_len < 32);
 	        for(j = 0; j < substr_len; j++){ tokens[nr_token].str[j] = substr_start[j];}	
 	   default: 
 		tokens[nr_token].type = rules[i].token_type;
