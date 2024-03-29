@@ -31,8 +31,65 @@ static char *code_format =
 "  return 0; "
 "}";
 
+int buflen = 0;
+
+uint32_t choose(uint32_t n) {
+  return (rand() % n);
+}
+
+static void gen(char c) {
+  if(buflen >= 65534) return;
+  buf[buflen] = c;
+  buflen ++;
+  buf[buflen] = '\0';
+  return;
+}
+static void gen_rand_op() {
+  if(buflen >= 65534) return;
+  switch(choose(4)) {
+    case 0:
+	buf[buflen] = '+';
+	buflen ++;
+	buf[buflen] = '\0';
+	break;
+    case 1:
+	buf[buflen] = '-';
+	buflen ++;
+	buf[buflen] = '\0';
+	break;
+    case 2:
+	buf[buflen] = '*';
+	buflen ++;
+	buf[buflen] = '\0';
+	break;
+    case 3:
+	buf[buflen] = '/';
+	buflen ++;
+	buf[buflen] = '\0';
+	break;
+  }
+  return;
+}
 static void gen_rand_expr() {
-  buf[0] = '\0';
+  if(buflen >= 65534) return;	
+  switch(choose(3)) {
+    case 0:
+	buf[buflen] = '0'+ choose(10);
+        buflen++;
+	buf[buflen] = '\0';
+	break;	
+    case 1:
+	gen('(');
+	gen_rand_expr();
+	gen(')');
+	break;	
+    default: 
+	gen_rand_expr();
+	gen_rand_op();
+	gen_rand_expr();
+	break;
+  }
+  return;
 }
 
 int main(int argc, char *argv[]) {
