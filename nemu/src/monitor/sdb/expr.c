@@ -133,7 +133,7 @@ uint32_t eval(int p, int q){
     uint32_t val1 = eval(p, op - 1);
     uint32_t val2 = eval(op + 1, q);
     
-    printf("%c\n",tokens[op].type);
+    printf("%c, %d",tokens[op].type,val2);
     
     switch(tokens[op].type) {
       case '+': return val1 + val2;
