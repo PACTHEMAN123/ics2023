@@ -159,7 +159,7 @@ uint32_t eval(int p, int q){
   else {
     
     int op = findop(p, q);
-    printf("op = %d\n", op);
+    //printf("op = %d\n", op);
     if(tokens[p].type == DEREF && !op) {
 	//printf("try to deref\n");
 	//printf("p = %d, q = %d\n",p,q);
