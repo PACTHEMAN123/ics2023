@@ -28,6 +28,8 @@ enum {
 
 };
 
+word_t vaddr_read(vaddr_t, int);
+
 static struct rule {
   const char *regex;
   int token_type;
@@ -155,6 +157,11 @@ uint32_t eval(int p, int q){
     return eval(p + 1, q - 1);
   }
   else {
+    if(tokens[p].type == DEREF) {
+    	uint32_t ptr = eval(p+1, q);
+	word_t vread = vaddr_read(ptr, 4);
+	return (uint32_t)vread;
+    }
     int op = findop(p, q);
     uint32_t val1 = eval(p, op - 1);
     uint32_t val2 = eval(op + 1, q);
