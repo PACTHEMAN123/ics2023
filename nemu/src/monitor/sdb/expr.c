@@ -21,7 +21,8 @@
 #include <regex.h>
 
 enum {
-  TK_NOTYPE = 256, TK_EQ, TK_NUM,
+  TK_NOTYPE = 256, TK_EQ, TK_NUM, DEREF, TK_REG, TK_HNUM,
+  TK_NEQ, TK_AND
 
   /* TODO: Add more token types */
 
@@ -43,7 +44,11 @@ static struct rule {
   {"\\-", '-'},		// minus
   {"\\*", '*'},		// multi
   {"\\/", '/'}, 	// divise
-  {"[0-9]+", TK_NUM},	// numbers			 
+  {"[0-9]+", TK_NUM},	// numbers
+  {"\\$..", TK_REG},	// register			 
+  {"&&", TK_AND},
+  {"!=", TK_NEQ},
+  {"0x[0-9]+", TK_HNUM},
 };
 
 #define NR_REGEX ARRLEN(rules)
@@ -122,8 +127,15 @@ uint32_t eval(int p, int q){
     return -1; 
   }
   else if(p == q) {
-    if(tokens[p].type != TK_NUM)return -1;
-    else return ((uint32_t)atoi(tokens[p].str));
+    if(tokens[p].type != TK_NUM && tokens[p].type != TK_HNUM)return -1;
+    uint32_t ret = 0;
+    switch(tokens[p].type) {
+      case TK_NUM:
+	      ret = (uint32_t)atoi(tokens[p].str);
+      case TK_HNUM:
+	      ret = (uint32_t)strtol(tokens[p].str, NULL, 16);
+    }
+    return ret;
   }
   else if(check_parentheses(p, q) == true) {
     return eval(p + 1, q - 1);
@@ -173,6 +185,7 @@ static bool make_token(char *e) {
 	
         switch (rules[i].token_type) {
            case TK_NOTYPE: break;
+	   case TK_HNUM:
 	   case TK_NUM: 
 		int j;
 		assert(substr_len < 32);
@@ -202,6 +215,16 @@ word_t expr(char *e, bool *success) {
     return 0;
   }
 
+
   /* TODO: Insert codes to evaluate the expression. */
+  int i;
+  for(i = 0; i < nr_token; i++) { 
+    if(tokens[i].type == '*' && (i == 0 || tokens[i-1].type == '('
+	|| tokens[i-1].type == '+' || tokens[i].type == '-'
+	|| tokens[i-1].type == '*' || tokens[i].type == '/')) {
+      tokens[i].type = DEREF;
+    }
+  }
+
   return eval(0, nr_token-1);
 }
