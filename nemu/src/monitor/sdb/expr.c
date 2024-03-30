@@ -248,7 +248,7 @@ word_t expr(char *e, bool *success) {
   /* TODO: Insert codes to evaluate the expression. */
   int i;
   for(i = 0; i < nr_token; i++) { 
-    if(tokens[i].type == '*' && (i == 0 || (tokens[i].type!='('&& tokens[i].type!=TK_NUM && tokens[i].type!=TK_HNUM && tokens[i].type!=TK_REG))) {
+    if(tokens[i].type == '*' && (i == 0 || (tokens[i-1].type!='('&& tokens[i-1].type!=TK_NUM && tokens[i-1].type!=TK_HNUM && tokens[i-1].type!=TK_REG))) {
       tokens[i].type = DEREF;
     }
   }
