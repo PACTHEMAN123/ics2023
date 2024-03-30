@@ -44,11 +44,11 @@ static struct rule {
   {"\\-", '-'},		// minus
   {"\\*", '*'},		// multi
   {"\\/", '/'}, 	// divise
+  {"0x[0-9]+", TK_HNUM},
   {"[0-9]+", TK_NUM},	// numbers
   {"\\$..", TK_REG},	// register			 
   {"&&", TK_AND},
   {"!=", TK_NEQ},
-  {"0x[0-9]+", TK_HNUM},
 };
 
 #define NR_REGEX ARRLEN(rules)
