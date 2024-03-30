@@ -138,6 +138,7 @@ uint32_t eval(int p, int q){
 	      break;
       case TK_REG:
 	      bool success = true;
+	      printf("%s\n",tokens[p].str+1);
 	      ret = (uint32_t)isa_reg_str2val(tokens[p].str+1, &success);
 	      assert(success == true);
 	      break;
