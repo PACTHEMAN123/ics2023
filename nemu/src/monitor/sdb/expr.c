@@ -87,7 +87,7 @@ int findop(int p, int q) {
   int islock = 0;
   int level = 0, minlevel = 10;
   for(i = p; i <= q; i++) {
-    if(tokens[i].type == TK_NUM||tokens[i].type == TK_HNUM||tokens[i].type == TK_REG){continue;}
+    if(tokens[i].type == TK_NUM||tokens[i].type == TK_HNUM||tokens[i].type == TK_REG||tokens[i].type == DEREF){continue;}
     if(tokens[i].type == '('){islock = 1;continue;}
     if(tokens[i].type == ')'){islock = 0;continue;}
     if(!islock) {
@@ -102,6 +102,7 @@ int findop(int p, int q) {
       }
     }
   }
+  if(i > q) return -1;
   return op;
 }
 
@@ -157,13 +158,14 @@ uint32_t eval(int p, int q){
     return eval(p + 1, q - 1);
   }
   else {
-    if(tokens[p].type == DEREF) {
+    
+    int op = findop(p, q);
+    if(tokens[p].type == DEREF && op == -1) {
 	printf("try to deref\n");
     	uint32_t ptr = eval(p+1, q);
 	word_t vread = vaddr_read(ptr, 4);
 	return (uint32_t)vread;
     }
-    int op = findop(p, q);
     uint32_t val1 = eval(p, op - 1);
     uint32_t val2 = eval(op + 1, q);
     
