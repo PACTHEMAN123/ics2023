@@ -102,7 +102,6 @@ int findop(int p, int q) {
       }
     }
   }
-  if(i > q) return -1;
   return op;
 }
 
@@ -161,7 +160,7 @@ uint32_t eval(int p, int q){
     
     int op = findop(p, q);
     printf("op = %d\n", op);
-    if(tokens[p].type == DEREF && op == -1) {
+    if(tokens[p].type == DEREF && !op) {
 	printf("try to deref\n");
 	printf("p = %d, q = %d\n",p,q);
     	uint32_t ptr = eval(p+1, q);
