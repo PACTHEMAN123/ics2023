@@ -127,7 +127,7 @@ uint32_t eval(int p, int q){
     assert(0);
   }
   else if(p == q) {
-    if(tokens[p].type != TK_NUM && tokens[p].type != TK_HNUM)return -1;
+    if(tokens[p].type != TK_NUM && tokens[p].type != TK_HNUM && tokens[p].type != TK_REG)assert(0);
     uint32_t ret = 0;
     switch(tokens[p].type) {
       case TK_NUM:
