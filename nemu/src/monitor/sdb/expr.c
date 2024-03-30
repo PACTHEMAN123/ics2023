@@ -162,6 +162,7 @@ uint32_t eval(int p, int q){
     int op = findop(p, q);
     if(tokens[p].type == DEREF && op == -1) {
 	printf("try to deref\n");
+	printf("p = %d, q = %d\n",p,q);
     	uint32_t ptr = eval(p+1, q);
 	word_t vread = vaddr_read(ptr, 4);
 	return (uint32_t)vread;
