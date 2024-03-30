@@ -83,15 +83,21 @@ static int nr_token __attribute__((used))  = 0;
 int findop(int p, int q) {
   int i,op=0;
   int islock = 0;
+  int level = 0, minlevel = 10;
   for(i = p; i <= q; i++) {
-    if(tokens[i].type == TK_NUM){continue;}
+    if(tokens[i].type == TK_NUM||tokens[i].type == TK_HNUM||tokens[i].type == TK_REG){continue;}
     if(tokens[i].type == '('){islock = 1;continue;}
     if(tokens[i].type == ')'){islock = 0;continue;}
     if(!islock) {
-    	if(tokens[i].type == '+'||tokens[i].type == '-'){return i;}
-	else {
-	  if(!islock) { op = i; }
-	}
+      if(tokens[i].type == '*'||tokens[i].type == '/'){level = 3;}
+      else if(tokens[i].type == '+'||tokens[i].type == '-'){level = 2;}
+      else if(tokens[i].type == TK_EQ || tokens[i].type == TK_NEQ){level =1;}
+      else {level = 0;}
+
+      if(level < minlevel) {
+        minlevel = level;
+	op = i;
+      }
     }
   }
   return op;
@@ -156,6 +162,9 @@ uint32_t eval(int p, int q){
     //printf("%d%c%d\n",val1,tokens[op].type,val2);
     
     switch(tokens[op].type) {
+      case TK_EQ: return (val1==val2);
+      case TK_NEQ: return (val1!=val2);
+      case TK_AND: return (val1&&val2);
       case '+': return val1 + val2;
       case '-': return val1 - val2;
       case '*': return val1 * val2;
@@ -228,9 +237,7 @@ word_t expr(char *e, bool *success) {
   /* TODO: Insert codes to evaluate the expression. */
   int i;
   for(i = 0; i < nr_token; i++) { 
-    if(tokens[i].type == '*' && (i == 0 || tokens[i-1].type == '('
-	|| tokens[i-1].type == '+' || tokens[i].type == '-'
-	|| tokens[i-1].type == '*' || tokens[i].type == '/')) {
+    if(tokens[i].type == '*' && (i == 0 || (tokens[i].type!='('&& tokens[i].type!=TK_NUM && tokens[i].type!=TK_HNUM && tokens[i].type!=TK_REG))) {
       tokens[i].type = DEREF;
     }
   }
