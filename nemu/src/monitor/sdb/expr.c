@@ -46,7 +46,7 @@ static struct rule {
   {"\\/", '/'}, 	// divise
   {"0x[0-9]+", TK_HNUM},
   {"[0-9]+", TK_NUM},	// numbers
-  {"\\$..", TK_REG},	// register			 
+  {"\\$..[0-9]?", TK_REG},	// register			 
   {"&&", TK_AND},
   {"!=", TK_NEQ},
 };
@@ -124,7 +124,7 @@ static bool check_parentheses(int p, int q) {
 
 uint32_t eval(int p, int q){
   if(p > q) {
-    return -1; 
+    assert(0);
   }
   else if(p == q) {
     if(tokens[p].type != TK_NUM && tokens[p].type != TK_HNUM)return -1;
@@ -132,8 +132,15 @@ uint32_t eval(int p, int q){
     switch(tokens[p].type) {
       case TK_NUM:
 	      ret = (uint32_t)atoi(tokens[p].str);
+	      break;
       case TK_HNUM:
 	      ret = (uint32_t)strtol(tokens[p].str, NULL, 16);
+	      break;
+      case TK_REG:
+	      bool success = true;
+	      ret = (uint32_t)isa_reg_str2val(tokens[p].str+1, &success);
+	      assert(success == true);
+	      break;
     }
     return ret;
   }
@@ -186,6 +193,7 @@ static bool make_token(char *e) {
         switch (rules[i].token_type) {
            case TK_NOTYPE: break;
 	   case TK_HNUM:
+	   case TK_REG:
 	   case TK_NUM: 
 		int j;
 		assert(substr_len < 32);
