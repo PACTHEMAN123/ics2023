@@ -159,10 +159,10 @@ uint32_t eval(int p, int q){
   else {
     
     int op = findop(p, q);
-    printf("op = %d\n", op);
+    //printf("op = %d\n", op);
     if(tokens[p].type == DEREF && !op) {
-	printf("try to deref\n");
-	printf("p = %d, q = %d\n",p,q);
+	//printf("try to deref\n");
+	//printf("p = %d, q = %d\n",p,q);
     	uint32_t ptr = eval(p+1, q);
 	word_t vread = vaddr_read(ptr, 4);
 	return (uint32_t)vread;
