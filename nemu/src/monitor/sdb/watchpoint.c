@@ -22,7 +22,7 @@ typedef struct watchpoint {
   struct watchpoint *next;
 
   /* TODO: Add more members if necessary */
-  char *expr;
+  char *e;
   uint32_t val;
 } WP;
 
@@ -101,14 +101,14 @@ void delete_wp(int no) {
   return;
 }
 
-void set_wp(char *e) {
+void set_wp(char *ex) {
   WP *ptr = NULL;
   bool success = true;
   ptr = new_wp();
   //printf("%s\n",e);
-  ptr->expr = e;
+  ptr->e = ex;
   //printf("%s\n", ptr->expr);
-  ptr->val = expr(ptr->expr, &success);
+  ptr->val = expr(ptr->e, &success);
   //printf("%s\n", ptr->expr);
   return;
 }
@@ -118,8 +118,8 @@ int check_wp() {
   uint32_t nval;
   bool success = true;
   for (ptr = head; ptr != NULL; ptr = ptr->next) {
-    printf("%s\n",ptr->expr);
-    nval = expr(ptr->expr, &success);
+    printf("%s\n",ptr->e);
+    nval = expr(ptr->e, &success);
     if(nval != ptr->val)return 1;
   }
   return 0;
