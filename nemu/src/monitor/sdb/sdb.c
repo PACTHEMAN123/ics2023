@@ -116,7 +116,7 @@ static int cmd_p(char *args) {
 
 static int cmd_w(char *args) {
   set_wp(args);
-  printf("%s\n",args);
+  //printf("%s\n",args);
   return 0;
 }
 

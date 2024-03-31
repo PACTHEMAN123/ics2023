@@ -105,6 +105,7 @@ void set_wp(char *e) {
   WP *ptr = NULL;
   bool success = true;
   ptr = new_wp();
+  printf("%s\n",e);
   ptr->expr = e;
   ptr->val = expr(e, &success);
   return;
