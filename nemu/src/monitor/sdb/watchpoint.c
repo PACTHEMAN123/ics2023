@@ -120,7 +120,10 @@ int check_wp() {
   for (ptr = head; ptr != NULL; ptr = ptr->next) {
     //printf("%d\n",ptr->val);
     nval = expr(ptr->e, &success);
-    if(nval != ptr->val)return 1;
+    if(nval != ptr->val) {
+      ptr->val = nval;
+      return 1;
+    }
   }
   return 0;
 }
