@@ -22,7 +22,8 @@ typedef struct watchpoint {
   struct watchpoint *next;
 
   /* TODO: Add more members if necessary */
-
+  char *expr;
+  uint32_t val;
 } WP;
 
 static WP wp_pool[NR_WP] = {};
@@ -40,4 +41,55 @@ void init_wp_pool() {
 }
 
 /* TODO: Implement the functionality of watchpoint */
+WP* new_wp() {
+  if(free_  == NULL){assert(0);}
+  else {
+    if(head == NULL) {
+      head = free_;
+      free_ = head->next;
+      head->next = NULL;
+    }
+    else {
+      WP *ptr = head;
+      head = free_;
+      free_ = head->next;
+      head->next = ptr;
+    }
+    return head;
+  }
+}
 
+void free_wp(WP *wp) {
+  WP *ptr = NULL;
+  for (ptr = head ; ptr->next != NULL; ptr = ptr->next) {
+    if(ptr->next ==  wp){break;}
+  } 
+  if(ptr->next == NULL) {
+    assert(0);
+  }
+  else {
+    WP *tmp = (ptr->next)->next;
+    (ptr->next)->next = free_;
+    free_ = ptr->next;
+    ptr->next = tmp;
+  }
+  return;
+}
+
+void display_wp() {
+  WP *ptr = NULL;
+  for (ptr = head ; ptr != NULL; ptr = ptr->next) {
+    printf("NO:%d EXPR:%s VAL:%u\n", ptr->NO, ptr->expr, ptr->val);
+  }
+  return;
+}
+
+void delete_wp(int no) {
+  WP *ptr = NULL;
+  for (ptr = head ; ptr != NULL; ptr = ptr->next) {
+    if(no == ptr->NO)break;
+  }
+  if(ptr == NULL){ printf("Watch point not found\n");}
+  else { free_wp(ptr);}
+  return;
+}

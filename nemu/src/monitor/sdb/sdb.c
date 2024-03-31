@@ -23,6 +23,9 @@ static int is_batch_mode = false;
 
 void init_regex();
 void init_wp_pool();
+void display_wp();
+void delete_wp(int);
+void new_wp();
 word_t vaddr_read(vaddr_t, int);
 
 /* We use the `readline' library to provide more flexibility to read from stdin. */
@@ -76,9 +79,10 @@ static int cmd_info(char *args) {
   else if(!strcmp(arg, "r")) {
     isa_reg_display(NULL);  
   }
-  else {
-  
+  else if(!strcmp(arg, "w")) {
+    display_wp();
   }
+  else {}
   return 0;
 }
 
