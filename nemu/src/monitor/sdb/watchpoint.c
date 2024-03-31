@@ -112,3 +112,14 @@ void set_wp(char *e) {
   //printf("%s\n", ptr->expr);
   return;
 }
+
+int check_wp() {
+  WP *ptr = NULL;
+  uint32_t nval;
+  bool success = true;
+  for (ptr = head; ptr != NULL; ptr = ptr->next) {
+    nval = expr(ptr->expr, &success);
+    if(nval != ptr->val)return 1;
+  }
+  return 0;
+}
