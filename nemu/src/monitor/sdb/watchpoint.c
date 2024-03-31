@@ -118,6 +118,7 @@ int check_wp() {
   uint32_t nval;
   bool success = true;
   for (ptr = head; ptr != NULL; ptr = ptr->next) {
+    printf("%s\n",ptr->expr);
     nval = expr(ptr->expr, &success);
     if(nval != ptr->val)return 1;
   }
