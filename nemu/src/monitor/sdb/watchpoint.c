@@ -110,5 +110,6 @@ void set_wp(char *e) {
   ptr->expr = e;
   printf("%s\n", ptr->expr);
   ptr->val = expr(ptr->expr, &success);
+  printf("%s\n", ptr->expr);
   return;
 }
