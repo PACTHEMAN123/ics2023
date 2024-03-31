@@ -86,7 +86,8 @@ void free_wp(WP *wp) {
 void display_wp() {
   WP *ptr = NULL;
   for (ptr = head ; ptr != NULL; ptr = ptr->next) {
-    printf("NO:%d VAL:%u EXPR:%s\n", ptr->NO, ptr->val, ptr->expr);
+    printf("NO:%d VAL:%u\n", ptr->NO, ptr->val);
+    printf("EXPR:%s\n",ptr->expr);
   }
   return;
 }
