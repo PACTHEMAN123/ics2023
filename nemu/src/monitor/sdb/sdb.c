@@ -26,6 +26,7 @@ void init_wp_pool();
 void display_wp();
 void delete_wp(int);
 void new_wp();
+void set_wp(char*);
 word_t vaddr_read(vaddr_t, int);
 
 /* We use the `readline' library to provide more flexibility to read from stdin. */
@@ -114,6 +115,7 @@ static int cmd_p(char *args) {
 }
 
 static int cmd_w(char *args) {
+  set_wp(args);
   return 0;
 }
 

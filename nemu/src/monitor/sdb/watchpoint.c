@@ -93,3 +93,12 @@ void delete_wp(int no) {
   else { free_wp(ptr);}
   return;
 }
+
+void set_wp(char *e) {
+  WP *ptr = NULL;
+  bool success = true;
+  ptr = new_wp();
+  ptr->expr = e;
+  ptr->val = expr(e, &success);
+  return;
+}
