@@ -108,6 +108,6 @@ void set_wp(char *e) {
   //printf("%s\n",e);
   ptr->expr = e;
   printf("%s\n", ptr->expr);
-  ptr->val = expr(e, &success);
+  ptr->val = expr(ptr->expr, &success);
   return;
 }
