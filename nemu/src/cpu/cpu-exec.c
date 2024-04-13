@@ -34,7 +34,7 @@ int check_wp();
 
 void device_update();
 // record the ring buffer of instruction
-Decode *irb[10];
+Decode *irb[10] = {NULL};
 int rcounter = 0;
 
 // load in buffer
