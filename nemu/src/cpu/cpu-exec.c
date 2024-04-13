@@ -29,8 +29,32 @@ CPU_state cpu = {};
 uint64_t g_nr_guest_inst = 0;
 static uint64_t g_timer = 0; // unit: us
 static bool g_print_step = false;
+// check watchpoint
 int check_wp();
+
 void device_update();
+// record the ring buffer of instruction
+Decode *irb[10];
+int rcounter = 0;
+
+// load in buffer
+void iringbuf_load(Decode *s) {
+  int index = rcounter % 10;
+  irb[index] = s;
+  rcounter ++;
+  return;
+}
+// print the buffer
+void iringbuf_read() {
+  int i;
+  int hit = (rcounter - 1) % 10;
+  for( i = 0 ; i < 10 ; i++ ) {
+    if( i == hit ) printf("-->");
+    else printf("   ");
+    puts(irb[i]->logbuf); 
+  } 
+  return; 
+}
 
 static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 #ifdef CONFIG_ITRACE_COND
@@ -53,6 +77,7 @@ static void exec_once(Decode *s, vaddr_t pc) {
   s->snpc = pc;
   isa_exec_once(s);
   cpu.pc = s->dnpc;
+  iringbuf_load(s);
 #ifdef CONFIG_ITRACE
   char *p = s->logbuf;
   p += snprintf(p, sizeof(s->logbuf), FMT_WORD ":", s->pc);
@@ -101,6 +126,7 @@ static void statistic() {
 
 void assert_fail_msg() {
   isa_reg_display();
+  iringbuf_read();
   statistic();
 }
 
