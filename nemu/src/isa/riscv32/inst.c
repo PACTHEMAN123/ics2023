@@ -128,5 +128,5 @@ void init_ftrace(const char *elf) {
     Assert(fp, "Can not open '%s'", elf);
     fclose(fp);
   } 
-  Log("Ftrace is on");
+  Log("Ftrace is on, reading %s", elf);
 } 
