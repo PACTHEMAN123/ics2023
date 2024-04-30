@@ -122,10 +122,18 @@ int isa_exec_once(Decode *s) {
   return decode_exec(s);
 }
 
+
+/* ftrace */
+#include <elf.h>
+
 void init_ftrace(const char *elf) {
   if(elf != NULL) {
-    FILE *fp = fopen(elf, "r");
+    FILE *fp = fopen(elf, "rb");
     Assert(fp, "Can not open '%s'", elf);
+    Elf32_Ehdr ehdr;
+    size_t ret = fread(&ehdr, sizeof(ehdr), 1, fp);
+    Log("ret : %d", (int)ret);
+    Log("section header offset: %#x", ehdr.e_shoff);
     fclose(fp);
   } 
   Log("Ftrace is on, reading %s", elf);
