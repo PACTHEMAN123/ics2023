@@ -151,7 +151,10 @@ void init_ftrace(const char *elf) {
         symtab_offset = shdr.sh_offset;
         symtab_size = shdr.sh_size;
         symtab_entsize = shdr.sh_entsize;
-        strtab_offset = shdr.sh_link;
+        uint32_t strtab_index = shdr.sh_link;
+        fseek(fp, ehdr.e_shoff + strtab_index * ehdr.e_shentsize, SEEK_SET);
+        ret = fread(&shdr, sizeof(shdr), 1, fp);
+        strtab_offset = shdr.sh_offset;
       }
     }
     Log("ret : %d", (int)ret);
