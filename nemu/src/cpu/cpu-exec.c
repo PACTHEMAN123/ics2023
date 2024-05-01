@@ -55,8 +55,6 @@ void iringbuf_read() {
   } 
   return; 
 }
-// output ftrace
-void output_ftrace(vaddr_t, vaddr_t);
 
 static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 #ifdef CONFIG_ITRACE_COND
@@ -78,9 +76,6 @@ static void exec_once(Decode *s, vaddr_t pc) {
   s->pc = pc;
   s->snpc = pc;
   isa_exec_once(s);
-// ftrace maybe need macro! //
-  output_ftrace(s->pc, s->dnpc);
-
   cpu.pc = s->dnpc;
   iringbuf_load(s);
 #ifdef CONFIG_ITRACE
