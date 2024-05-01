@@ -172,7 +172,6 @@ void init_ftrace(const char *elf) {
       ret = fread(&symtab, sizeof(symtab), 1, fp);
       //Log("size : %d,value : %x",symtab.st_size, symtab.st_value);
       if((0xf & symtab.st_info) == STT_FUNC){
-        Log("here");
         func[findex].size = symtab.st_size;
         func[findex].value = symtab.st_value;
         fseek(fp, strtab_offset + symtab.st_name, SEEK_SET);
