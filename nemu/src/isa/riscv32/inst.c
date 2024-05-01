@@ -130,17 +130,24 @@ typedef struct {
   char name[32];
   uint32_t value;
 }FUNC;
+
+FUNC func[32];
+int findex = 0;
+
 void init_ftrace(const char *elf) {
   if(elf != NULL) {
+    
     FILE *fp = fopen(elf, "rb");
     Assert(fp, "Can not open '%s'", elf);
     uint32_t symtab_size;
     uint32_t symtab_entsize;
     Elf32_Off symtab_offset;
     Elf32_Off strtab_offset;
+
     /* access elf header */
     Elf32_Ehdr ehdr;
     size_t ret = fread(&ehdr, sizeof(ehdr), 1, fp);
+
     /* access section header */
     Elf32_Shdr shdr;
     for(int i = 0; i < ehdr.e_shnum ; i++) {
@@ -157,6 +164,22 @@ void init_ftrace(const char *elf) {
         strtab_offset = shdr.sh_offset;
       }
     }
+
+    /* scan the symbol table */
+    Elf32_Sym symtab;
+    for(int i = 0; i * symtab_entsize < symtab_size; i++) {
+      fseek(fp, symtab_offset + i * symtab_entsize, SEEK_SET);
+      ret = fread(&symtab, sizeof(symtab), 1, fp);
+      if(symtab.st_info == STT_FUNC){
+        func[findex].size = symtab.st_size;
+        func[findex].value = symtab.st_value;
+        fseek(fp, strtab_offset + symtab.st_name, SEEK_SET);
+        /* get the name */
+        ret = (size_t)fgets(func[findex].name, 32, fp);
+        Log("[%d] %s: size: %d, value: %#x", findex, func[findex].name, func[findex].size, func[findex].value); 
+      }
+    }
+
     Log("ret : %d", (int)ret);
     Log("section header offset: %#x", ehdr.e_shoff);
     Log("symbol table offset: %#x, entsize: %#x, size: %#x", symtab_offset, symtab_entsize, symtab_size);
