@@ -169,10 +169,10 @@ void init_ftrace(const char *elf) {
     Elf32_Sym symtab;
     Log("times: %d", (symtab_size / symtab_entsize));
     for(int i = 0; i < (int)(symtab_size / symtab_entsize); i++) {
-      Log("here");
       fseek(fp, symtab_offset + i * symtab_entsize, SEEK_SET);
       ret = fread(&symtab, sizeof(symtab), 1, fp);
       if(symtab.st_info == STT_FUNC){
+        Log("here");
         func[findex].size = symtab.st_size;
         func[findex].value = symtab.st_value;
         fseek(fp, strtab_offset + symtab.st_name, SEEK_SET);
