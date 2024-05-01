@@ -151,9 +151,7 @@ void init_ftrace(const char *elf) {
         symtab_offset = shdr.sh_offset;
         symtab_size = shdr.sh_size;
         symtab_entsize = shdr.sh_entsize;
-      }
-      else if(shdr.sh_type == SHT_STRTAB){
-        strtab_offset = shdr.sh_offset;
+        strtab_offset = shdr.sh_link;
       }
     }
     Log("ret : %d", (int)ret);
