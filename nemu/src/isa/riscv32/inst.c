@@ -168,7 +168,8 @@ void init_ftrace(const char *elf) {
     /* scan the symbol table */
     Elf32_Sym symtab;
     Log("times: %d", (symtab_size / symtab_entsize));
-    for(size_t i = 0; i < (symtab_size / symtab_entsize); i++) {
+    for(int i = 0; i < (int)(symtab_size / symtab_entsize); i++) {
+      Log("here");
       fseek(fp, symtab_offset + i * symtab_entsize, SEEK_SET);
       ret = fread(&symtab, sizeof(symtab), 1, fp);
       if(symtab.st_info == STT_FUNC){
