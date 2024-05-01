@@ -139,10 +139,10 @@ void init_ftrace(const char *elf) {
     
     FILE *fp = fopen(elf, "rb");
     Assert(fp, "Can not open '%s'", elf);
-    uint32_t symtab_size;
-    uint32_t symtab_entsize;
-    Elf32_Off symtab_offset;
-    Elf32_Off strtab_offset;
+    uint32_t symtab_size = 0;
+    uint32_t symtab_entsize = 0;
+    Elf32_Off symtab_offset = 0;
+    Elf32_Off strtab_offset = 0;
 
     /* access elf header */
     Elf32_Ehdr ehdr;
@@ -167,8 +167,7 @@ void init_ftrace(const char *elf) {
 
     /* scan the symbol table */
     Elf32_Sym symtab;
-    Log("times: %d", (symtab_size / symtab_entsize));
-    for(int i = 0; i < (int)(symtab_size / symtab_entsize); i++) {
+    for(int i = 0; i * symtab_entsize < symtab_size ; i++) {
       fseek(fp, symtab_offset + i * symtab_entsize, SEEK_SET);
       ret = fread(&symtab, sizeof(symtab), 1, fp);
       //Log("size : %d,value : %x",symtab.st_size, symtab.st_value);
@@ -185,9 +184,9 @@ void init_ftrace(const char *elf) {
     }
 
     Log("ret : %d", (int)ret);
-    Log("section header offset: %#x", ehdr.e_shoff);
-    Log("symbol table offset: %#x, entsize: %#x, size: %#x", symtab_offset, symtab_entsize, symtab_size);
-    Log("string table offset: %#x", strtab_offset);
+    //Log("section header offset: %#x", ehdr.e_shoff);
+    //Log("symbol table offset: %#x, entsize: %#x, size: %#x", symtab_offset, symtab_entsize, symtab_size);
+    //Log("string table offset: %#x", strtab_offset);
     fclose(fp);
   } 
   Log("Ftrace is on, reading %s", elf); 
