@@ -187,7 +187,7 @@ void init_ftrace(const char *elf) {
         fseek(fp, strtab_offset + symtab.st_name, SEEK_SET);
         /* get the name */
         ret = (size_t)fgets(func[findex].name, 32, fp);
-        Log("[%d] %s: size: %d, value: %#x", findex, func[findex].name, func[findex].size, func[findex].value); 
+        //Log("[%d] %s: size: %d, value: %#x", findex, func[findex].name, func[findex].size, func[findex].value); 
         findex ++;
       }
     }
@@ -198,7 +198,7 @@ void init_ftrace(const char *elf) {
     //Log("string table offset: %#x", strtab_offset);
     fclose(fp);
   } 
-  Log("Ftrace is on, reading %s", elf); 
+  //Log("Ftrace is on, reading %s", elf); 
 } 
 
 /* display ftrace by getting address */
