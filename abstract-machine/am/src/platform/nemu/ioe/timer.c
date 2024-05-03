@@ -5,8 +5,8 @@ void __am_timer_init() {
 }
 
 void __am_timer_uptime(AM_TIMER_UPTIME_T *uptime) {
-  int s = 0; 
-  printf("%d ",s);
+  int s = 1; 
+  printf("%d",s);
   uptime->us = s;
 }
 
