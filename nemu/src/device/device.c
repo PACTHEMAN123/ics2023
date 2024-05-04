@@ -76,7 +76,7 @@ void sdl_clear_event_queue() {
 void init_device() {
   IFDEF(CONFIG_TARGET_AM, ioe_init());
   init_map();
-
+  Log("here");
   IFDEF(CONFIG_HAS_SERIAL, init_serial());
   IFDEF(CONFIG_HAS_TIMER, init_timer());
   IFDEF(CONFIG_HAS_VGA, init_vga());
