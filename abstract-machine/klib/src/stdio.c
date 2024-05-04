@@ -105,6 +105,7 @@ int sprintf(char *out, const char *fmt, ...) {
     fmt ++;
   }
   va_end(ap);
+  out[count] = '\0';
   return count; 
 }
 
