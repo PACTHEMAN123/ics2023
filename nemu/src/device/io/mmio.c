@@ -19,7 +19,7 @@
 #define NR_MAP 16
 
 static IOMap maps[NR_MAP] = {};
-static int nr_map = 1;
+static int nr_map = 0;
 
 static IOMap* fetch_mmio_map(paddr_t addr) {
   int mapid = find_mapid_by_addr(maps, nr_map, addr);
