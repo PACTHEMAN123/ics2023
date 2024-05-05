@@ -19,7 +19,7 @@
 #define NR_MAP 16
 
 static IOMap maps[NR_MAP] = {};
-static int nr_map = 1;
+static int nr_map = 0;
 
 static IOMap* fetch_mmio_map(paddr_t addr) {
   int mapid = find_mapid_by_addr(maps, nr_map, addr);
@@ -34,7 +34,7 @@ static void report_mmio_overlap(const char *name1, paddr_t l1, paddr_t r1,
 
 /* device interface */
 void add_mmio_map(const char *name, paddr_t addr, void *space, uint32_t len, io_callback_t callback) {
-  Log("nr_map: %d",nr_map); 
+  //Log("nr_map: %d",nr_map); 
   assert(nr_map < NR_MAP);
   paddr_t left = addr, right = addr + len - 1;
   if (in_pmem(left) || in_pmem(right)) {
