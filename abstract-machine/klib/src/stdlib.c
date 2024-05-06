@@ -29,15 +29,14 @@ int atoi(const char* nptr) {
   return x;
 }
 
-size_t malloc_size = 0;
+static size_t malloc_size = 0;
 
 void *malloc(size_t size) {
   // On native, malloc() will be called during initializaion of C runtime.
   // Therefore do not call panic() here, else it will yield a dead recursion:
   //   panic() -> putchar() -> (glibc) -> malloc() -> panic()
-
-  void *ptr = (void *)((uintptr_t)heap.start + malloc_size); 
-  malloc_size += size;
+  void *ptr = (void *)((uintptr_t)heap.start + malloc_size);
+  malloc_size += size; 
   return ptr; 
 }
 
