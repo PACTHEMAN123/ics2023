@@ -37,7 +37,7 @@ int printf(const char *fmt, ...) {
 	  while(d!=0){str[i++] = (d%10)+'0';d/=10;}
 	  if(pad_zero){
 	    int num_zero = width - i;
-	    while(num_zero--){putch('0');count++;}
+	    while(num_zero-- > 0){putch('0');count++;}
 	  }
 	  while(i>0){putch(str[--i]);count++;}
 	  ifbreak = 0;
