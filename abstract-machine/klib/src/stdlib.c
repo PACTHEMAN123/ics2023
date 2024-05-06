@@ -29,7 +29,7 @@ int atoi(const char* nptr) {
   return x;
 }
 
-static size_t malloc_size = 0;
+size_t malloc_size = 0;
 
 void *malloc(size_t size) {
   // On native, malloc() will be called during initializaion of C runtime.
