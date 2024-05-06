@@ -6,7 +6,6 @@
 #if !defined(__ISA_NATIVE__) || defined(__NATIVE_USE_KLIB__)
 
 int printf(const char *fmt, ...) {
-  putch('1');
   va_list ap;
   va_start(ap, fmt);
   int count = 0;
@@ -59,7 +58,7 @@ int printf(const char *fmt, ...) {
     fmt ++;
   }
   va_end(ap);
-  putch('\0');
+  //putch('\0');
   return count; 
 }
 
