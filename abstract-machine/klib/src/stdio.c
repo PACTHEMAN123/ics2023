@@ -17,10 +17,11 @@ int printf(const char *fmt, ...) {
       int width = 0;
       int pad_zero = 0;
       int d;
+      unsigned int u;
       int i;
       int ifbreak = 1;
       char *s;
-      char str[12];
+      char str[32];
       while(ifbreak) {
 	c = *(++fmt);
 	switch(c) {
@@ -31,6 +32,18 @@ int printf(const char *fmt, ...) {
 	  str[i] = '\0';
 	  width = atoi(str);
 	  break;
+	case 'u':
+	  u = (unsigned int)va_arg(ap,int);
+	  i = 0;
+	  while(u!=0){str[i++] = (u%10)+'0';u/=10;}
+	  if(pad_zero){
+	    int num_zero = width - i;
+	    while(num_zero-- > 0){putch('0');count++;}
+	  }
+	  while(i>0){putch(str[--i]);count++;}
+	  ifbreak = 0;
+	  break;
+	case 'x':
 	case 'd':
 	  d = va_arg(ap,int);
 	  i = 0;
