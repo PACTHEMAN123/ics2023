@@ -13,7 +13,7 @@ int printf(const char *fmt, ...) {
   {
     if(*fmt == '%')
     {
-      char c;
+      char c, ch;
       int width = 0;
       int pad_zero = 0;
       int d;
@@ -31,6 +31,11 @@ int printf(const char *fmt, ...) {
 	  while((*(fmt + 1)>'0')&&(*(fmt + 1)<='9')){str[i++]=*(++fmt);}
 	  str[i] = '\0';
 	  width = atoi(str);
+	  break;
+	case 'c':
+	  ch = va_arg(ap, int);
+	  putch(ch);
+	  ifbreak = 0;
 	  break;
 	case 'u':
 	  u = (unsigned int)va_arg(ap,int);
@@ -87,11 +92,12 @@ int sprintf(char *out, const char *fmt, ...) {
   {
     if(*fmt == '%')
     {
-      char c;
+      char c, ch;
       int width = 0;
       int pad_zero = 0;
       int d;
       int i;
+      unsigned int u;
       int ifbreak = 1;
       char *s;
       char str[12];
@@ -104,14 +110,31 @@ int sprintf(char *out, const char *fmt, ...) {
 	  while((*(fmt + 1)>'0')&&(*(fmt + 1)<='9')){str[i++]=*(++fmt);}
 	  str[i] = '\0';
 	  width = atoi(str);
+	  break;	
+        case 'u':
+	  u = (unsigned int)va_arg(ap,int);
+	  i = 0;
+	  while(u!=0){str[i++] = (u%10)+'0';u/=10;}
+	  if(pad_zero){
+	    int num_zero = width - i;
+	    while(num_zero-- > 0){out[count++]='0';}
+	  }
+	  while(i>0){out[count++]=str[--i];}
+	  ifbreak = 0;
 	  break;
+	case 'c':
+	  ch = va_arg(ap, int);
+	  out[count++]=ch;
+	  ifbreak = 0;
+	  break;
+	case 'x':
 	case 'd':
 	  d = va_arg(ap,int);
 	  i = 0;
 	  while(d!=0){str[i++] = (d%10)+'0';d/=10;}
 	  if(pad_zero){
 	    int num_zero = width - i;
-	    while(num_zero--)out[count++]='0';
+	    while(num_zero-->0)out[count++]='0';
 	  }
 	  while(i>0){out[count++]=str[--i];}
 	  ifbreak = 0;
