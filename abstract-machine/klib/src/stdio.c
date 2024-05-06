@@ -58,6 +58,7 @@ int printf(const char *fmt, ...) {
     fmt ++;
   }
   va_end(ap);
+  putch('\0');
   return count; 
 }
 
