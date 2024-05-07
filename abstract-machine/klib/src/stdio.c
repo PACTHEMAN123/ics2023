@@ -61,9 +61,9 @@ int printf(const char *fmt, ...) {
 	  ifbreak = 0;
 	  break;
 	case 's':
-	  putch('H');
 	  s = va_arg(ap, char *);
 	  while(*s){putch(*(s++));count++;}
+	  putch('h');
 	  ifbreak = 0;
 	  break;
 	}
