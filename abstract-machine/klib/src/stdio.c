@@ -62,7 +62,7 @@ int printf(const char *fmt, ...) {
 	  break;
 	case 's':
 	  s = va_arg(ap, char *);
-	  while(*s){putch(*s++);count++;}
+	  while(*s){putch(*(s++));count++;}
 	  ifbreak = 0;
 	  break;
 	}
