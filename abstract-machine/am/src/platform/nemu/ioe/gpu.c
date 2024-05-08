@@ -20,7 +20,7 @@ void __am_gpu_config(AM_GPU_CONFIG_T *cfg) {
 }
 
 void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *ctl) {
-  int i, j;
+/*  int i, j;
   int W = inw(VGACTL_ADDR + 2);
   int x = ctl->x;
   int y = ctl->y;
@@ -33,7 +33,7 @@ void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *ctl) {
       uint32_t px = *(p + w * (i-y) + (j-x));
       *(fb + j + i * W) = px;
     }
-  }
+  } */
   if (ctl->sync) {
     outl(SYNC_ADDR, 1);
   }
