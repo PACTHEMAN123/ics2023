@@ -5,12 +5,12 @@
 #define min(x,y) ((x < y) ? (x) : (y))
 #define SIZE_ADDR (VGACTL_ADDR)
 void __am_gpu_init() {
-  int i;
+/*  int i;
   int h = io_read(AM_GPU_CONFIG).height;
   int w = io_read(AM_GPU_CONFIG).width;
   uint32_t *fb = (uint32_t *)(uintptr_t)FB_ADDR;
   for (i = 0; i < w * h; i++) fb[i] = i;
-  outl(SYNC_ADDR, 1);
+  outl(SYNC_ADDR, 1);*/
 }
 
 void __am_gpu_config(AM_GPU_CONFIG_T *cfg) {
