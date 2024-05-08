@@ -1,7 +1,9 @@
 #include <am.h>
 #include <nemu.h>
+#include <klib.h>
 #define SYNC_ADDR (VGACTL_ADDR + 4)
-
+#define min(x,y) ((x < y) ? (x) : (y))
+#define SIZE_ADDR (VGACTL_ADDR)
 void __am_gpu_init() {
 /*  int i;
   int h = (int)(inl(VGACTL_ADDR) >> 16);
@@ -21,18 +23,18 @@ void __am_gpu_config(AM_GPU_CONFIG_T *cfg) {
 }
 
 void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *ctl) {
-  int i, j;
-  int W = inw(VGACTL_ADDR + 2);
-  int x = ctl->x;
-  int y = ctl->y;
-  int w = ctl->w;
-  int h = ctl->h;
-  uint32_t *p = (uint32_t *)(ctl->pixels);
-  uint32_t *fb = (uint32_t *)(uintptr_t)FB_ADDR;
-  for(i = y; i < y + h; i++) {
-    for(j = x; j < x + w; j++) {
-      uint32_t px = *(p + w * (i-y) + (j-x));
-      *(fb + j + i * W) = px;
+  if(ctl->w != 0 && ctl->h != 0){
+    int W = inw(SIZE_ADDR+2);  
+    int x = ctl->x, y = ctl->y, w = ctl->w, h = ctl->h;
+    uint32_t* p = ctl->pixels;
+
+    uint32_t p_pos = 0;
+    uint32_t *fb = (uint32_t *)(uintptr_t)FB_ADDR;
+    uint32_t cp_byte = sizeof(uint32_t) * min(w , W - x);
+    for(int row = y; row < y + h; ++ row){
+      memcpy(fb + x + row * W, p + (p_pos), cp_byte);
+      // printf("write pixels[%d] of %d to fb[%d, %d]\n", p_pos, p[p_pos], row , x);
+      p_pos += w;
     }
   } 
   if (ctl->sync) {
