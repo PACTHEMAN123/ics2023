@@ -15,7 +15,7 @@ void __am_gpu_init() {
 void __am_gpu_config(AM_GPU_CONFIG_T *cfg) {
   *cfg = (AM_GPU_CONFIG_T) {
     .present = true, .has_accel = false,
-    .width = 800, .height = 600,
+    .width = 0, .height = 0,
     .vmemsz = 0
   };
 }
