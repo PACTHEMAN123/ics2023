@@ -143,6 +143,7 @@ int isa_exec_once(Decode *s) {
 /* get csr register */
 int get_csr(word_t imm) {
   word_t index = imm & 0xfff;
+  Log("here");
   int csr;
   switch(index){
     case 0x305: // mtvec
