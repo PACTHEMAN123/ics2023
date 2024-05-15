@@ -157,6 +157,9 @@ int get_csr(word_t imm) {
     case 0x342: // mcause
 	csr = 2;
 	break;
+    case 0x300: // mstatus
+	csr = 3;
+	break;
     default:
 	assert(0);
 	break;
