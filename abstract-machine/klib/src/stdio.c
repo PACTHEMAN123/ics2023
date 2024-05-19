@@ -12,6 +12,7 @@ int printf(const char *fmt, ...) {
   int count = vsprintf(buf, fmt, ap);
   for(int i = 0; i < count; i++){putch(buf[i]);}
   va_end(ap);
+  assert(0);
   return count; 
 }
 
