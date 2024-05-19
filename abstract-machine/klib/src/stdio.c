@@ -75,7 +75,7 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
 	case 'x':
 	  u = (unsigned int)va_arg(ap,void *);
 	  i = 0;
-	  while(u!=0){str[i++] = hextable[u%16];putch('0'+u%16); u/=16;}
+	  while(u!=0){str[i++] = hextable[u%16]; u/=16;}
 	  if(pad_zero){
 	    int num_zero = width - i;
 	    while(num_zero-->0)out[count++]='0';
