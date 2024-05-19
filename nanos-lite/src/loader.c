@@ -13,6 +13,7 @@ size_t ramdisk_read(void *, size_t, size_t);
 
 static uintptr_t loader(PCB *pcb, const char *filename) {
 
+printf("here");
   Elf_Ehdr ehdr;
   ramdisk_read((void *)(&ehdr), 0, sizeof(ehdr));
   
@@ -27,7 +28,6 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
 }
 
 void naive_uload(PCB *pcb, const char *filename) {
-printf("here");
   uintptr_t entry = loader(pcb, filename);
   Log("Jump to entry = %p", entry);
   ((void(*)())entry) ();
