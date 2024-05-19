@@ -22,7 +22,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
 
   Elf_Phdr phdr;
   ramdisk_read((void *)(&phdr), ehdr.e_phoff, sizeof(phdr));
- 
+  printf("here"); 
   for(int i = 0; i < phdr.p_filesz; i += bufsiz) {
     memset(buf, 0, bufsiz);
     size_t size = min(bufsiz, phdr.p_filesz - i);
