@@ -74,7 +74,7 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
 	case 'x':
 	  d= va_arg(ap,int);
 	  i = 0;
-	  char *hextable = "0123456789abcdef";
+	  char hextable[16] = "0123456789abcdef";
 	  while(d!=0){str[i++] = hextable[d%16];d/=16;}
 	  if(pad_zero){
 	    int num_zero = width - i;
