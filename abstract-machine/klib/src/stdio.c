@@ -8,7 +8,7 @@
 int printf(const char *fmt, ...) {
   va_list ap;
   va_start(ap, fmt);
-  char buf[1000];
+  char buf[5120];
   int count = vsprintf(buf, fmt, ap);
   for(int i = 0; i <= count; i++){putch(buf[i]);}
   va_end(ap);
