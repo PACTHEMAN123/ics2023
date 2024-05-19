@@ -25,7 +25,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   printf("%d", phdr.p_filesz); 
   for(int i = 0; i < phdr.p_filesz; i += bufsiz) {
     memset(buf, 0, bufsiz);
-    size_t size = min(bufsiz, phdr.p_filesz - i);
+    size_t size = min((min(bufsiz, phdr.p_filesz - i)), phdr.p_filesz);
     ramdisk_read(buf, phdr.p_offset, size);
     strncpy((char *)(phdr.p_vaddr + i), buf, size);
   }
