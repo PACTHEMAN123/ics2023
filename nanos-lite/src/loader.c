@@ -17,7 +17,6 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   ramdisk_read((void *)(&ehdr), 0, sizeof(ehdr));
 
   Elf_Phdr phdr;
-  ramdisk_read((void *)(&phdr), ehdr.e_phoff, sizeof(phdr));
 
   for(int i = 0; i < ehdr.e_phnum; i++) {
     ramdisk_read((void *)(&phdr), ehdr.e_phoff + i * ehdr.e_phentsize, sizeof(phdr));
@@ -25,7 +24,8 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
     printf("filesz:%d memsz:%d vaddr:%p offset:%d", phdr.p_filesz, phdr.p_memsz, phdr.p_vaddr, phdr.p_offset);
     ramdisk_read((void *)(phdr.p_vaddr), phdr.p_offset, phdr.p_filesz); 
     printf("here"); 
-    memset((void *)(phdr.p_vaddr + phdr.p_filesz), 0, phdr.p_memsz - phdr.p_filesz); 
+    memset((void *)(phdr.p_vaddr + phdr.p_filesz), 0, phdr.p_memsz - phdr.p_filesz);
+    break; 
   } 
   return phdr.p_vaddr;
 }
