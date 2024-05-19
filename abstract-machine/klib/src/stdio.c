@@ -8,86 +8,25 @@
 int printf(const char *fmt, ...) {
   va_list ap;
   va_start(ap, fmt);
-  int count = 0;
-  while(*fmt)
-  {
-    if(*fmt == '%')
-    {
-      char c, ch;
-      int width = 0;
-      int pad_zero = 0;
-      int d;
-      unsigned int u;
-      int i;
-      int ifbreak = 1;
-      char *s;
-      char str[32];
-      while(ifbreak) {
-	c = *(++fmt);
-	switch(c) {
-	case '0':
-	  pad_zero = 1;
-	  i = 0;
-	  while((*(fmt + 1)>'0')&&(*(fmt + 1)<='9')){str[i++]=*(++fmt);}
-	  str[i] = '\0';
-	  width = atoi(str);
-	  break;
-	case 'c':
-	  ch = va_arg(ap, int);
-	  putch(ch);
-	  ifbreak = 0;
-	  break;
-	case 'u':
-	  u = (unsigned int)va_arg(ap,int);
-	  i = 0;
-	  while(u!=0){str[i++] = (u%10)+'0';u/=10;}
-	  if(pad_zero){
-	    int num_zero = width - i;
-	    while(num_zero-- > 0){putch('0');count++;}
-	  }
-	  while(i>0){putch(str[--i]);count++;}
-	  ifbreak = 0;
-	  break;
-	case 'x':
-	case 'd':
-	  d = va_arg(ap,int);
-	  i = 0;
-	  while(d!=0){str[i++] = (d%10)+'0';d/=10;}
-	  if(pad_zero){
-	    int num_zero = width - i;
-	    while(num_zero-- > 0){putch('0');count++;}
-	  }
-	  while(i>0){putch(str[--i]);count++;}
-	  ifbreak = 0;
-	  break;
-	case 's':
-	  s = va_arg(ap, char *);
-	  assert(s);
-	  while(*s){putch(*(s++));count++;}
-	  ifbreak = 0;
-	  break;
-	}
-      } 
-    }
-    else
-    {
-      putch(*fmt);
-      count++;
-    } 
-    fmt ++;
-  }
+  char buf[512];
+  int count = vsprintf(buf, fmt, ap);
   va_end(ap);
-  //putch('\0');
   return count; 
-}
-
-int vsprintf(char *out, const char *fmt, va_list ap) {
-  panic("Not implemented");
 }
 
 int sprintf(char *out, const char *fmt, ...) {
   va_list ap;
   va_start(ap, fmt);
+  int count = vsprintf(out, fmt, ap);
+  va_end(ap);
+  return count; 
+}
+
+int snprintf(char *out, size_t n, const char *fmt, ...) {
+  panic("Not implemented");
+}
+
+int vsprintf(char *out, const char *fmt, va_list ap) {
   int count = 0;
   while(*fmt)
   {
@@ -154,15 +93,10 @@ int sprintf(char *out, const char *fmt, ...) {
     } 
     fmt ++;
   }
-  va_end(ap);
   out[count] = '\0';
-  return count; 
-}
+  return count;
 
-int snprintf(char *out, size_t n, const char *fmt, ...) {
-  panic("Not implemented");
 }
-
 int vsnprintf(char *out, size_t n, const char *fmt, va_list ap) {
   panic("Not implemented");
 }
