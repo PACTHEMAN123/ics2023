@@ -16,6 +16,8 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   Elf_Ehdr ehdr;
   ramdisk_read((void *)(&ehdr), 0, sizeof(ehdr));
 
+  char magic[16] = { 0x7f, 0x45, 0x4c, 0x46, 0x01, 0x01, 0x01, 0,0,0,0,0,0,0,0,0};
+  assert(strcmp((char *)ehdr.e_ident, magic) == 0);
   Elf_Phdr phdr;
 
   for(int i = 0; i < ehdr.e_phnum; i++) {
