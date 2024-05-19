@@ -29,6 +29,7 @@ int snprintf(char *out, size_t n, const char *fmt, ...) {
 
 int vsprintf(char *out, const char *fmt, va_list ap) {
   int count = 0;
+  char hextable[16] = "0123456789abcdef";
   while(*fmt)
   {
     if(*fmt == '%')
@@ -72,10 +73,9 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
 	case 'p':
 	  out[count++] = '0';out[count++] = 'x';
 	case 'x':
-	  d= va_arg(ap,int);
+	  u = (unsigned int)va_arg(ap,int);
 	  i = 0;
-	  char hextable[16] = "0123456789abcdef";
-	  while(d!=0){str[i++] = hextable[d%16];d/=16;}
+	  while(d!=0){str[i++] = hextable[u%16];u/=16;}
 	  if(pad_zero){
 	    int num_zero = width - i;
 	    while(num_zero-->0)out[count++]='0';
