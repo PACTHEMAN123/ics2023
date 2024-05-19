@@ -20,7 +20,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   ramdisk_read((void *)(&phdr), ehdr.e_phoff, sizeof(phdr));
   printf("%d", phdr.p_filesz); 
   ramdisk_read((void *)(phdr.p_vaddr), phdr.p_offset, phdr.p_filesz); 
-  
+  printf("here"); 
   memset((void *)(phdr.p_vaddr + phdr.p_filesz), 0, phdr.p_memsz - phdr.p_filesz); 
    
   return phdr.p_vaddr;
