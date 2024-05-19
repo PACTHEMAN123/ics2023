@@ -13,10 +13,9 @@ size_t ramdisk_read(void *, size_t, size_t);
 
 static uintptr_t loader(PCB *pcb, const char *filename) {
 
-printf("here");
   Elf_Ehdr ehdr;
   ramdisk_read((void *)(&ehdr), 0, sizeof(ehdr));
-  
+printf("here");
   Elf_Phdr phdr;
   ramdisk_read((void *)(&phdr), ehdr.e_phoff, sizeof(phdr));
 
