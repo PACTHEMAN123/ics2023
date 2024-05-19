@@ -18,7 +18,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
 
   Elf_Phdr phdr;
   ramdisk_read((void *)(&phdr), ehdr.e_phoff, sizeof(phdr));
-  assert(phdr.p_vaddr != 0); 
+  printf("filesz:%d memsz:%d vaddr:%p offset:%d", phdr.p_filesz, phdr.p_memsz, phdr.p_vaddr, phdr.p_offset);
   ramdisk_read((void *)(phdr.p_vaddr), phdr.p_offset, phdr.p_filesz); 
   printf("here"); 
   memset((void *)(phdr.p_vaddr + phdr.p_filesz), 0, phdr.p_memsz - phdr.p_filesz); 
