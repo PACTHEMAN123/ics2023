@@ -6,11 +6,11 @@ void do_syscall(Context *c) {
   a[1] = c->GPR2;
   a[2] = c->GPR3;
   a[3] = c->GPR4;
+	 printf("here");
   switch (a[0]) {
     case 0: halt(a[1]);
     case 1: yield(); c->GPRx = 0; break;
     case 4: if(a[1]==1||a[1]==2){
-	 printf("here");
               char *buf = (char *)(a[2]);
               for(int i=0;i<a[3];i++)
 	      putch(buf[i]);
