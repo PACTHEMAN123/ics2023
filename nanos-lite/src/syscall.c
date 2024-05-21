@@ -12,10 +12,19 @@ void do_syscall(Context *c) {
     case 1: yield(); c->GPRx = 0; break;
     case 4: if(a[1]==1||a[1]==2){
               char *buf = (char *)(a[2]);
-              for(int i=0;i<a[3];i++)
+              for(size_t i=0;i<a[3];i++)
 	      putch(buf[i]);
 	      c->GPRx=a[3];
 	    } break; 
     default: panic("Unhandled syscall ID = %d", a[0]);
   }
 }
+/*
+int sys_write(int fd, void *buf, size_t count) {
+  if(a[1]==1||a[1]==2){
+     char *buf = (char *)(a[2]);
+     for(int i=0;i<a[3];i++)
+     putch(buf[i]);
+     c->GPRx=a[3];
+  } 
+}*/
