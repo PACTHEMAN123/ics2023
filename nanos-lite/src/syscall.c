@@ -9,7 +9,7 @@ void do_syscall(Context *c) {
   a[1] = c->GPR2;
   a[2] = c->GPR3;
   a[3] = c->GPR4;
-  Log("syscall ID = %d", a[0]);
+  //Log("syscall ID = %d", a[0]);
 	 //printf("here %d, %d", (int)a[0], a[1]);
   switch (a[0]) {
     case 0: halt(a[1]);
