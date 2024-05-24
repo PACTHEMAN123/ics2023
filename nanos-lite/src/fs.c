@@ -38,7 +38,7 @@ int fs_open(const char *pathname, int flags, int mode) {
   for(int i = 0; i < sizeof(file_table) / sizeof(Finfo); i++) {
     if(strcmp(pathname, file_table[i].name) == 0) {
       file_table[i].open_offset = 0;
-Log("open %s", file_table[i].name);
+//Log("open %s", file_table[i].name);
       return i;
     }
   }
@@ -46,8 +46,7 @@ Log("open %s", file_table[i].name);
 }
 
 int fs_close(int fd) {
-Log("close %s", file_table[fd].name);
-
+//Log("close %s", file_table[fd].name);
   return 0;
 }
 
@@ -61,7 +60,7 @@ size_t fs_read(int fd, void *buf, size_t len) {
 }
 
 size_t fs_write(int fd, const void *buf, size_t len) {
- Log("write %s", file_table[fd].name);
+// Log("write %s", file_table[fd].name);
   size_t tmp = file_table[fd].open_offset; 
   size_t count = min(len, (file_table[fd].size - file_table[fd].open_offset));
   file_table[fd].open_offset += count;
@@ -80,7 +79,7 @@ size_t fs_lseek(int fd, size_t offset, int whence) {
   }
   file_table[fd].open_offset = ret;
   assert(ret <= file_table[fd].size);
-  Log("%s offset: %d", file_table[fd].name, file_table[fd].open_offset);
+  //Log("%s offset: %d", file_table[fd].name, file_table[fd].open_offset);
   return ret; 
 }
 
