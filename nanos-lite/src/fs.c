@@ -45,6 +45,8 @@ Log("open %s", file_table[i].name);
 }
 
 int fs_close(int fd) {
+Log("close %s", file_table[fd].name);
+
   return 0;
 }
 
