@@ -63,7 +63,7 @@ size_t fs_write(int fd, const void *buf, size_t len) {
 }
 
 size_t fs_lseek(int fd, size_t offset, int whence) {
-  assert(fd > 3);
+  if(fd < 3) return -1;
   size_t ret = 0;
   switch(whence) {
     case SEEK_SET: ret = offset; break;
