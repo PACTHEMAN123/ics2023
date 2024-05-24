@@ -51,7 +51,7 @@ Log("close %s", file_table[fd].name);
 }
 
 size_t fs_read(int fd, void *buf, size_t len) {
-//Log("read %s", file_table[fd].name);
+Log("read %s", file_table[fd].name);
   size_t tmp = file_table[fd].open_offset;
   file_table[fd].open_offset += len;
   assert(file_table[fd].open_offset <= file_table[fd].size);
@@ -59,7 +59,7 @@ size_t fs_read(int fd, void *buf, size_t len) {
 }
 
 size_t fs_write(int fd, const void *buf, size_t len) {
-// Log("write %s", file_table[fd].name);
+ Log("write %s", file_table[fd].name);
  size_t tmp = file_table[fd].open_offset;
   file_table[fd].open_offset += len;
   assert(file_table[fd].open_offset <= file_table[fd].size);
