@@ -70,6 +70,7 @@ size_t fs_lseek(int fd, size_t offset, int whence) {
     default: assert(0);
   }
   file_table[fd].open_offset = ret;
+  assert(ret <= file_table[fd].size);
   Log("%s offset: %d", file_table[fd].name, file_table[fd].open_offset);
   return ret; 
 }
