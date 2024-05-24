@@ -1,5 +1,6 @@
 #include <fs.h>
 
+#define min(x,y) ((x < y) ? x : y)
 typedef size_t (*ReadFn) (void *buf, size_t offset, size_t len);
 typedef size_t (*WriteFn) (const void *buf, size_t offset, size_t len);
 size_t ramdisk_read(void *, size_t, size_t);
@@ -51,19 +52,21 @@ Log("close %s", file_table[fd].name);
 }
 
 size_t fs_read(int fd, void *buf, size_t len) {
-Log("read %s from %d to %d", file_table[fd].name, file_table[fd].open_offset, file_table[fd].open_offset + len);
+//Log("read %s from %d to %d", file_table[fd].name, file_table[fd].open_offset, file_table[fd].open_offset + len);
   size_t tmp = file_table[fd].open_offset;
-  file_table[fd].open_offset += len;
+  size_t count = min(len, (file_table[fd].size - file_table[fd].open_offset));
+  file_table[fd].open_offset += count;
   //assert(file_table[fd].open_offset <= file_table[fd].size);
-  return ramdisk_read(buf, file_table[fd].disk_offset + tmp, len);
+  return ramdisk_read(buf, file_table[fd].disk_offset + tmp, count);
 }
 
 size_t fs_write(int fd, const void *buf, size_t len) {
  Log("write %s", file_table[fd].name);
- size_t tmp = file_table[fd].open_offset;
-  file_table[fd].open_offset += len;
+  size_t tmp = file_table[fd].open_offset; 
+  size_t count = min(len, (file_table[fd].size - file_table[fd].open_offset));
+  file_table[fd].open_offset += count;
   //assert(file_table[fd].open_offset <= file_table[fd].size);
-  return ramdisk_write(buf, file_table[fd].disk_offset + tmp, len);
+  return ramdisk_write(buf, file_table[fd].disk_offset + tmp, count);
 }
 
 size_t fs_lseek(int fd, size_t offset, int whence) {
