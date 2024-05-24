@@ -34,16 +34,14 @@ static Finfo file_table[] __attribute__((used)) = {
 };
 
 int fs_open(const char *pathname, int flags, int mode) {
-  int fd = -1;
   for(int i = 0; i < sizeof(file_table) / sizeof(Finfo); i++) {
     if(strcmp(pathname, file_table[i].name) == 0) {
-      fd = i;
-      file_table[fd].open_offset = 0;
-      break;
+      file_table[i].open_offset = 0;
+Log("open %s", file_table[i].name);
+      return i;
     }
   }
-  if(fd == -1)assert(0);
-  return fd;
+  return -1;
 }
 
 int fs_close(int fd) {
