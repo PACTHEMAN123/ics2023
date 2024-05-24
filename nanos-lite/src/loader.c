@@ -16,7 +16,6 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
 printf("%d", fd);
   Elf_Ehdr ehdr;
   fs_read(fd, (void *)(&ehdr), sizeof(ehdr));
-printf("\n%s", (char *)ehdr.e_ident);
   char magic[16] = { 0x7f, 0x45, 0x4c, 0x46, 0x01, 0x01, 0x01, 0,0,0,0,0,0,0,0,0};
   assert(strcmp((char *)ehdr.e_ident, magic) == 0);
   Elf_Phdr phdr;

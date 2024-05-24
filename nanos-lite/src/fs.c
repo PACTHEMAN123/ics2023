@@ -38,7 +38,6 @@ int fs_open(const char *pathname, int flags, int mode) {
   for(int i = 0; i < sizeof(file_table) / sizeof(Finfo); i++) {
     if(strcmp(pathname, file_table[i].name) == 0) {
       fd = i;
-printf("here");
       file_table[fd].open_offset = 0;
       break;
     }
@@ -52,13 +51,15 @@ int fs_close(int fd) {
 }
 
 size_t fs_read(int fd, void *buf, size_t len) {
+  size_t tmp = file_table[fd].open_offset;
   file_table[fd].open_offset += len;
-  return ramdisk_read(buf, file_table[fd].disk_offset + file_table[fd].open_offset, len);
+  return ramdisk_read(buf, file_table[fd].disk_offset + tmp, len);
 }
 
 size_t fs_write(int fd, const void *buf, size_t len) {
+  size_t tmp = file_table[fd].open_offset;
   file_table[fd].open_offset += len;
-  return ramdisk_write(buf, file_table[fd].disk_offset + file_table[fd].open_offset, len);
+  return ramdisk_write(buf, file_table[fd].disk_offset + tmp, len);
 }
 
 size_t fs_lseek(int fd, size_t offset, int whence) {
