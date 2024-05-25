@@ -7,7 +7,7 @@ int main() {
   int sec = 1;
   while(1) {
     assert(gettimeofday(&tv, &tz) == 0);
-    if(tv.tv_sec / (sec * 0.5)) {
+    if((tv.tv_sec * 2) / sec) {
       printf("sec: %ld hello from navy\n", tv.tv_sec);
       sec += 1;
     }
