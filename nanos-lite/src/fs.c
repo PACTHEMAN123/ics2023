@@ -1,6 +1,8 @@
 #include <fs.h>
 
 #define min(x,y) ((x < y) ? x : y)
+#define NR_FILE (sizeof(file_table) / sizeof(file_table[0]))
+
 typedef size_t (*ReadFn) (void *buf, size_t offset, size_t len);
 typedef size_t (*WriteFn) (const void *buf, size_t offset, size_t len);
 size_t ramdisk_read(void *, size_t, size_t);
@@ -26,11 +28,20 @@ size_t invalid_write(const void *buf, size_t offset, size_t len) {
   panic("should not reach here");
   return 0;
 }
+
+size_t file_read(void *buf, size_t offset, size_t len) {
+  return ramdisk_read(buf, offset, len);
+}
+
+size_t file_write(const void *buf, size_t offset, size_t len) {
+  return ramdisk_write(buf, offset, len);
+}
+
 /* This is the information about all files in disk. */
 static Finfo file_table[] __attribute__((used)) = {
   [FD_STDIN]  = {"stdin", 0, 0, 0, invalid_read, invalid_write},
-  [FD_STDOUT] = {"stdout", 0, 0, 0,  invalid_read, invalid_write},
-  [FD_STDERR] = {"stderr", 0, 0, 0, invalid_read, invalid_write},
+  [FD_STDOUT] = {"stdout", 0, 0, 0,  invalid_read, serial_write},
+  [FD_STDERR] = {"stderr", 0, 0, 0, invalid_read, serial_write},
 #include "files.h"
 };
 
@@ -52,20 +63,22 @@ int fs_close(int fd) {
 
 size_t fs_read(int fd, void *buf, size_t len) {
 //Log("read %s from %d to %d", file_table[fd].name, file_table[fd].open_offset, file_table[fd].open_offset + len);
+  if(fd < 3) return file_table[fd].read(buf, 0, len);
   size_t tmp = file_table[fd].open_offset;
   size_t count = min(len, (file_table[fd].size - file_table[fd].open_offset));
   file_table[fd].open_offset += count;
   //assert(file_table[fd].open_offset <= file_table[fd].size);
-  return ramdisk_read(buf, file_table[fd].disk_offset + tmp, count);
+  return file_table[fd].read(buf, file_table[fd].disk_offset + tmp, count);
 }
 
 size_t fs_write(int fd, const void *buf, size_t len) {
 // Log("write %s", file_table[fd].name);
+  if(fd < 3) return file_table[fd].write(buf, 0, len);
   size_t tmp = file_table[fd].open_offset; 
   size_t count = min(len, (file_table[fd].size - file_table[fd].open_offset));
   file_table[fd].open_offset += count;
   //assert(file_table[fd].open_offset <= file_table[fd].size);
-  return ramdisk_write(buf, file_table[fd].disk_offset + tmp, count);
+  return file_table[fd].write(buf, file_table[fd].disk_offset + tmp, count);
 }
 
 size_t fs_lseek(int fd, size_t offset, int whence) {
@@ -85,5 +98,10 @@ size_t fs_lseek(int fd, size_t offset, int whence) {
 
 
 void init_fs() {
+  
+  for(int i = 3; i < NR_FILE; i++) {
+    if(file_table[i].write == NULL) file_table[i].write = file_write;
+    if(file_table[i].read == NULL) file_table[i].read = file_read;
+  } 
   // TODO: initialize the size of /dev/fb
 }
