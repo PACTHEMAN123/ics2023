@@ -1,14 +1,14 @@
-#include <sys/time.h>
 #include <stdio.h>
 #include <assert.h>
+#include <NDL.h>
+
 int main() {
-  struct timeval tv;
-  struct timezone tz;
   int sec = 1;
+  uint32_t usec;
   while(1) {
-    assert(gettimeofday(&tv, &tz) == 0);
-    if((tv.tv_sec * 2) / sec) {
-      printf("sec: %ld hello from navy\n", tv.tv_sec);
+    usec = NDL_GetTicks();
+    if((usec / 1000000) == sec) {
+      printf("sec: %d hello from navy\n", sec);
       sec += 1;
     }
   }
