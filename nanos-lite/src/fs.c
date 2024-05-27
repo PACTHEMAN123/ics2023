@@ -63,7 +63,7 @@ int fs_close(int fd) {
 }
 
 size_t fs_read(int fd, void *buf, size_t len) {
-//Log("read %s from %d to %d", file_table[fd].name, file_table[fd].open_offset, file_table[fd].open_offset + len);
+Log("read %s from %d to %d", file_table[fd].name, file_table[fd].open_offset, file_table[fd].open_offset + len);
   if(fd < 4) return file_table[fd].read(buf, 0, len);
   size_t tmp = file_table[fd].open_offset;
   size_t count = min(len, (file_table[fd].size - file_table[fd].open_offset));
