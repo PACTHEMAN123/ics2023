@@ -50,7 +50,7 @@ int fs_open(const char *pathname, int flags, int mode) {
   for(int i = 0; i < sizeof(file_table) / sizeof(Finfo); i++) {
     if(strcmp(pathname, file_table[i].name) == 0) {
       file_table[i].open_offset = 0;
-//Log("open %s", file_table[i].name);
+Log("open %s", file_table[i].name);
       return i;
     }
   }
@@ -63,7 +63,7 @@ int fs_close(int fd) {
 }
 
 size_t fs_read(int fd, void *buf, size_t len) {
-Log("read %s from %d to %d", file_table[fd].name, file_table[fd].open_offset, file_table[fd].open_offset + len);
+//Log("read %s from %d to %d", file_table[fd].name, file_table[fd].open_offset, file_table[fd].open_offset + len);
   if(fd < 4) return file_table[fd].read(buf, 0, len);
   size_t tmp = file_table[fd].open_offset;
   size_t count = min(len, (file_table[fd].size - file_table[fd].open_offset));
