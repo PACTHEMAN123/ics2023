@@ -9,6 +9,7 @@
 static int evtdev = -1;
 static int fbdev = -1;
 static int screen_w = 0, screen_h = 0;
+static int dis_w = 0, dis_h = 0;
 
 uint32_t NDL_GetTicks() {
   struct timeval tv;
@@ -43,8 +44,12 @@ void NDL_OpenCanvas(int *w, int *h) {
   }
   FILE *fb_fp = fopen("/proc/dispinfo", "r");
   fscanf(fb_fp, "WIDTH : %d\nHEIGHT: %d\n", w, h);
-  screen_w = *w;
-  screen_h = *h;
+  if(*w == 0 && *h == 0) {
+    *w = screen_w;
+    *h = screen_h;
+  }
+  dis_w = *w;
+  dis_h = *h;
   //printf("%d %d", *w, *h);
   fclose(fb_fp);
 
