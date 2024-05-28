@@ -68,6 +68,7 @@ int NDL_Init(uint32_t flags) {
 
   FILE *fb_fp = fopen("/proc/dispinfo", "r");
   int w, h;
+  printf("here");
   fscanf(fb_fp, "%d %d", &w, &h);
   fclose(fb_fp);
 
