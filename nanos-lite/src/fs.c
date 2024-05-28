@@ -43,6 +43,7 @@ static Finfo file_table[] __attribute__((used)) = {
   [FD_STDOUT] = {"stdout", 0, 0, 0,  invalid_read, serial_write},
   [FD_STDERR] = {"stderr", 0, 0, 0, invalid_read, serial_write},
   {"/dev/events", 0, 0, 0, events_read, invalid_write},
+  {"/proc/dispinfo", 0, 0, 0, dispinfo_read, invalid_write},
 #include "files.h"
 };
 
@@ -64,7 +65,7 @@ int fs_close(int fd) {
 
 size_t fs_read(int fd, void *buf, size_t len) {
 //Log("read %s from %d to %d", file_table[fd].name, file_table[fd].open_offset, file_table[fd].open_offset + len);
-  if(fd < 4) return file_table[fd].read(buf, 0, len);
+  if(fd < 5) return file_table[fd].read(buf, 0, len);
   size_t tmp = file_table[fd].open_offset;
   size_t count = min(len, (file_table[fd].size - file_table[fd].open_offset));
   file_table[fd].open_offset += count;
@@ -74,7 +75,7 @@ size_t fs_read(int fd, void *buf, size_t len) {
 
 size_t fs_write(int fd, const void *buf, size_t len) {
 // Log("write %s", file_table[fd].name);
-  if(fd < 4) return file_table[fd].write(buf, 0, len);
+  if(fd < 5) return file_table[fd].write(buf, 0, len);
   size_t tmp = file_table[fd].open_offset; 
   size_t count = min(len, (file_table[fd].size - file_table[fd].open_offset));
   file_table[fd].open_offset += count;
@@ -100,7 +101,7 @@ size_t fs_lseek(int fd, size_t offset, int whence) {
 
 void init_fs() {
   
-  for(int i = 3; i < NR_FILE; i++) {
+  for(int i = 5; i < NR_FILE; i++) {
     if(file_table[i].write == NULL) file_table[i].write = file_write;
     if(file_table[i].read == NULL) file_table[i].read = file_read;
   } 
