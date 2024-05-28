@@ -41,6 +41,12 @@ void NDL_OpenCanvas(int *w, int *h) {
     }
     close(fbctl);
   }
+  FILE *fb_fp = fopen("/proc/dispinfo", "r");
+  fscanf(fb_fp, "WIDTH : %d\nHEIGHT: %d\n", w, h);
+  printf("%d %d", *w, *h);
+  fclose(fb_fp);
+
+
 }
 
 void NDL_DrawRect(uint32_t *pixels, int x, int y, int w, int h) {
@@ -65,12 +71,7 @@ int NDL_Init(uint32_t flags) {
     evtdev = 3;
   }
   evtdev = open("/dev/events", 0, 0);
-  FILE *fb_fp = fopen("/proc/dispinfo", "r");
-  int w, h;
-  fscanf(fb_fp, "WIDTH : %d\nHEIGHT: %d\n", &w, &h);
-  fclose(fb_fp);
-
-  printf("%d %d\n",w, h); 
+  
   return 0;
 }
 
