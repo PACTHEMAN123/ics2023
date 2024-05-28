@@ -65,7 +65,7 @@ int NDL_Init(uint32_t flags) {
     evtdev = 3;
   }
   evtdev = open("/dev/events", 0, 0);
-
+  printf("here");
   FILE *fb_fp = fopen("/proc/dispinfo", "r");
   int w, h;
   printf("here");
