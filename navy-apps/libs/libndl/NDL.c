@@ -25,6 +25,7 @@ int NDL_PollEvent(char *buf, int len) {
 }
 
 void NDL_OpenCanvas(int *w, int *h) {
+  printf("bmp size: (%d,%d)\n",*w, *h);
   if(*w == 0 && *h == 0) {
     *w = dis_w;
     *h = dis_h;
