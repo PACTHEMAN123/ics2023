@@ -25,6 +25,10 @@ int NDL_PollEvent(char *buf, int len) {
 }
 
 void NDL_OpenCanvas(int *w, int *h) {
+  if(*w == 0 && *h == 0) {
+    *w = dis_w;
+    *h = dis_h;
+  }
   if (getenv("NWM_APP")) {
     int fbctl = 4;
     fbdev = 5;
@@ -42,30 +46,18 @@ void NDL_OpenCanvas(int *w, int *h) {
     }
     close(fbctl);
   }
-  FILE *fb_fp = fopen("/proc/dispinfo", "r");
-  fscanf(fb_fp, "WIDTH : %d\nHEIGHT: %d\n", w, h);
-  if(*w == 0 && *h == 0) {
-    *w = screen_w;
-    *h = screen_h;
-  }
-  dis_w = *w;
-  dis_h = *h;
-  //printf("%d %d", *w, *h);
-  fclose(fb_fp);
-
-
+  
 }
 
 void NDL_DrawRect(uint32_t *pixels, int x, int y, int w, int h) {
   if(w == 0 && h == 0) {
-    w = screen_w;
-    h = screen_h;
+    w = dis_w;
+    h = dis_h;
   }
   for(int i = 0; i < h; i++) {
     lseek(fbdev, x + (y + i) * screen_w, SEEK_SET);
     write(fbdev, pixels + i * w, w); 
   } 
-  write(fbdev, 0, 0);
 }
 
 void NDL_OpenAudio(int freq, int channels, int samples) {
@@ -88,6 +80,11 @@ int NDL_Init(uint32_t flags) {
   }
   evtdev = open("/dev/events", 0, 0);
   fbdev = open("/dev/fb", 0, 0);
+  FILE *fb_fp = fopen("/proc/dispinfo", "r");
+  fscanf(fb_fp, "WIDTH : %d\nHEIGHT: %d\n", &dis_w, &dis_h);
+  fclose(fb_fp);
+
+
   return 0;
 }
 
