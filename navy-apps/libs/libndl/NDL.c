@@ -18,10 +18,9 @@ uint32_t NDL_GetTicks() {
 }
 
 int NDL_PollEvent(char *buf, int len) {
-  int fd = open("/dev/events", 0, 0);
-  assert(fd != -1);
+  assert(evtdev != -1);
   buf[0] = '\0';  
-  return read(fd, buf, len);
+  return read(evtdev, buf, len);
 }
 
 void NDL_OpenCanvas(int *w, int *h) {
@@ -65,6 +64,8 @@ int NDL_Init(uint32_t flags) {
   if (getenv("NWM_APP")) {
     evtdev = 3;
   }
+  evtdev = open("/dev/events", 0, 0);
+
   return 0;
 }
 
