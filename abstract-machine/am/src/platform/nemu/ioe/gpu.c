@@ -26,7 +26,7 @@ void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *ctl) {
     int W = inw(SIZE_ADDR+2);  
     int x = ctl->x, y = ctl->y, w = ctl->w, h = ctl->h;
     uint32_t* p = ctl->pixels;
-
+    printf("x:%d y:%d w:%d h:%d\n", x, y, w, h);
     uint32_t p_pos = 0;
     uint32_t *fb = (uint32_t *)(uintptr_t)FB_ADDR;
     uint32_t cp_byte = sizeof(uint32_t) * min(w , W - x);
