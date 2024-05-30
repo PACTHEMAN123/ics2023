@@ -86,16 +86,17 @@ size_t fs_write(int fd, const void *buf, size_t len) {
 
 size_t fs_lseek(int fd, size_t offset, int whence) {
  // Log("%d", fd);
+  assert(fd > 3 && fd < NR_FILE);
   size_t ret = 0;
   switch(whence) {
     case SEEK_SET: ret = offset; break;
     case SEEK_CUR: ret = file_table[fd].open_offset + offset; break;
     case SEEK_END: ret = file_table[fd].size + offset; break;
-    default: assert(0);
+    default: return -1;
   }
   file_table[fd].open_offset = ret;
-  if(fd < 5) ret = 0;
-  assert(ret <= file_table[fd].size);
+  
+  //assert(ret <= file_table[fd].size);
   //Log("%s offset: %d", file_table[fd].name, file_table[fd].open_offset);
   return ret; 
 }
