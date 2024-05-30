@@ -32,7 +32,7 @@ void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *ctl) {
     uint32_t cp_byte = sizeof(uint32_t) * min(w , W - x);
     for(int row = y; row < y + h; ++ row){
       memcpy(fb + x + row * W, p + (p_pos), cp_byte);
-       printf("write pixels[%d] of %d to fb[%d, %d]\n", p_pos, p[p_pos], row , x);
+       printf("write pixels[%d] of %d to fb[%d, %d]\n", p_pos + 1, p[p_pos], row , x);
       p_pos += w;
     }
   } 
