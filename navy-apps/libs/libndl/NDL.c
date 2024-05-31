@@ -55,8 +55,8 @@ void NDL_DrawRect(uint32_t *pixels, int x, int y, int w, int h) {
     w = dis_w;
     h = dis_h;
   }
-  x += dis_w / 2;
-  y += dis_h / 2;
+  x += dis_w / 2 - w;
+  y += dis_h / 2 - h;
   printf("writing (%d,%d) by size (%d,%d)\n", x, y, w, h);
   for(int i = 0; i < h; i++) {
     lseek(fbdev, x + (y + i) * dis_w, SEEK_SET);
